@@ -22,7 +22,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class DeliveryEntity {
 
     @Id
