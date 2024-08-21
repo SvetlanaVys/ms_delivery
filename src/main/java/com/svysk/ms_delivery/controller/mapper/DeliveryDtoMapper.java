@@ -11,10 +11,13 @@ public interface DeliveryDtoMapper {
 
     @Mapping(target = "id",source = "id")
     @Mapping(target = "clientName", source = "clientName", qualifiedByName = "myMapping")
+    @Mapping(target = "products", source = "products")
     DeliveryDto toDeliveryDto(Delivery delivery);
 
     @Named("myMapping")
     default String myMapping(String clientName){
         return "product" + clientName;
     }
+
+    Delivery toDelivery(DeliveryDto deliveryDto);
 }

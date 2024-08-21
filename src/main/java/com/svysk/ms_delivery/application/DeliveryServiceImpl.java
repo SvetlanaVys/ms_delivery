@@ -23,4 +23,19 @@ public class DeliveryServiceImpl implements DeliveryService {
     public Optional<Delivery> findById(Long id) {
         return deliveryRepository.findById(id);
     }
+
+    @Override
+    public Optional<Delivery> save(Delivery delivery) {
+        return deliveryRepository.save(delivery);
+    }
+
+    @Override
+    public void delete(Delivery delivery) {
+        deliveryRepository.delete(delivery);
+    }
+
+    @Override
+    public Optional<Delivery> update(Delivery delivery) {
+        return deliveryRepository.update(delivery);
+    }
 }

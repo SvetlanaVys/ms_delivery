@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 public interface DeliveryEntityMapper {
 
     Delivery toDelivery(DeliveryEntity delivery);
+
+    DeliveryEntity toDeliveryEntity(Delivery delivery);
 }

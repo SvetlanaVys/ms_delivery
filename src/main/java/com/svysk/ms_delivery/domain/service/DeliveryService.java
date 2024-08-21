@@ -9,4 +9,10 @@ public interface DeliveryService {
     List<Delivery> findAll();
 
     Optional<Delivery> findById(Long id);
+
+    Optional<Delivery> save(Delivery delivery);
+
+    void delete(Delivery delivery);
+
+    Optional<Delivery> update(Delivery delivery);
 }

@@ -32,4 +32,23 @@ public class DeliveryRepositoryImpl implements DeliveryRepository {
         return deliveryEntityDao.findById(id)
                 .map(deliveryEntityMapper::toDelivery);
     }
+
+    @Override
+    public Optional<Delivery> save(Delivery delivery) {
+        return Optional.of(
+                deliveryEntityDao.save(deliveryEntityMapper.toDeliveryEntity(delivery))
+        ).map(deliveryEntityMapper::toDelivery);
+    }
+
+    @Override
+    public void delete(Delivery delivery) {
+        deliveryEntityDao.delete(deliveryEntityMapper.toDeliveryEntity(delivery));
+    }
+
+    @Override
+    public Optional<Delivery> update(Delivery delivery) {
+        return Optional.of(
+                deliveryEntityDao.save(deliveryEntityMapper.toDeliveryEntity(delivery))
+        ).map(deliveryEntityMapper::toDelivery);
+    }
 }
