@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-delivery
+      author: Svitlana Vyskrebentseva
+      changes:
+        - createTable:
+            tableName: delivery
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_name
+                  type: varchar
+              - column:
+                  name: created_date
+                  type: datetime

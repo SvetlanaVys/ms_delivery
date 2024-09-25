@@ -1,21 +1,23 @@
 package com.svysk.ms_delivery.domain;
 
-import com.svysk.ms_delivery.adapters.storage.entity.ProductEntity;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Data
 public class Delivery {
-    Long id;
+    private Long id;
 
-    String clientName;
+    private String clientName;
 
-    List<ProductEntity> products;
+    private List<ProductQuantity> productQuantities;
+
+    private LocalDateTime createdDate;
 
     boolean containsProductWithName(String name){
-        return products.stream()
-                .anyMatch(product -> Objects.equals(product.getName(), name));
+        return productQuantities.stream()
+                .anyMatch(productQ -> Objects.equals(productQ.getProduct().getName(), name));
     }
 }

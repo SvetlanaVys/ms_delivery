@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +16,7 @@ import java.util.Objects;
 
 
 @Entity
+@Table(name = "product")
 @Getter
 @Setter
 @ToString
@@ -21,12 +24,18 @@ import java.util.Objects;
 public class ProductEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String name;
 
-    public ProductEntity(String name) {
+    @Column
+    private Double price;
+
+    public ProductEntity(String name, Double price) {
         this.name = name;
+        this.price = price;
     }
 
     @Override
