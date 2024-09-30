@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,8 +32,8 @@ public class DeliveryEntity {
     @Column(name="client_name")
     private String clientName;
 
-    @OneToMany(mappedBy="delivery")
-    private List<ProductQuantityEntity> productQuantities;
+    @OneToMany(mappedBy="delivery", cascade = CascadeType.ALL)
+    private List<ProductQuantityEntity> productQuantities = new ArrayList<>();
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;

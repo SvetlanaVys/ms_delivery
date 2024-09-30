@@ -37,7 +37,7 @@ public class ProductQuantityEntity {
     @JoinColumn(name="product_id")
     private ProductEntity product;
 
-    @ManyToOne
+    @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="delivery_id", nullable=false)
     private DeliveryEntity delivery;
 
