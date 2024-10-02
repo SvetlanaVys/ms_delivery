@@ -1,6 +1,7 @@
 package com.svysk.ms_delivery.adapters.storage.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "delivery")
 @Getter
 @Setter
 @ToString
@@ -26,7 +28,7 @@ import java.util.Objects;
 public class DeliveryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name="client_name")

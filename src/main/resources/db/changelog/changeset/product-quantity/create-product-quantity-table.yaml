@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Svitlana Vyskrebentseva
       changes:
         - createTable:
-            tableName: product-quantity
+            tableName: product_quantity
             columns:
               - column:
                   name: id
@@ -36,21 +36,21 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             baseColumnNames: delivery_id
-            baseTableName: delivery
+            baseTableName: product_quantity
             baseTableSchemaName: public
             constraintName: fk_pq_delivery
             onDelete: CASCADE
             onUpdate: RESTRICT
             referencedColumnNames: id
-            referencedTableName: product
+            referencedTableName: delivery
             referencedTableSchemaName: public
             validate: true
         - addForeignKeyConstraint:
             baseColumnNames: product_id
-            baseTableName: cart
+            baseTableName: product_quantity
             baseTableSchemaName: public
             constraintName: fk_pq_product
-            onDelete: CASCADE
+            onDelete: SET NULL
             onUpdate: RESTRICT
             referencedColumnNames: id
             referencedTableName: product
