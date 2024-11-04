@@ -3,7 +3,7 @@
 The service subscribes to a Kafka topic where it receives order details sent by the [Order Service](https://github.com/SvetlanaVys/ms_order).
 
 ### Technologies
-* **Java 20** and **Spring Boot 3** for building RESTful APIs.
+* **Java 22** and **Spring Boot 3** for building RESTful APIs.
 * **PostgreSQL** Database for data storage (RDB).
 * **Kafka** ensuring reliable and asynchronous communication.
 * **OpenAPI** specification for well-defined and documented API interactions.
