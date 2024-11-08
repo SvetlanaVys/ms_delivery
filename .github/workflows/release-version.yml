@@ -1,0 +1,37 @@
+name: Update Version on Merge
+
+on:
+  pull_request:
+    branches:
+      - main  # Only trigger when PR is merged into main
+    types: [ closed ]
+
+jobs:
+  remove-snapshot:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '22'
+
+      - name: Bump Version in pom.xml
+        run: |
+          current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          new_version="${current_version/-SNAPSHOT/}"
+          mvn versions:set -DnewVersion=$new_version -DgenerateBackupPoms=false
+
+      - name: Commit and Push Version Update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "Bump version to $new_version"
+          git push origin HEAD:main
