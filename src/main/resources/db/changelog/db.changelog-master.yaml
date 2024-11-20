@@ -1,4 +1,4 @@
- databaseChangeLog:
+databaseChangeLog:
   - include:
       file: db/changelog/changeset/product/create-product-table.yaml
   - include:
