@@ -15,4 +15,6 @@ public interface DeliveryService {
     void delete(Delivery delivery);
 
     Optional<Delivery> update(Delivery delivery);
+
+    void receiveOrder(String orderMessage);
 }

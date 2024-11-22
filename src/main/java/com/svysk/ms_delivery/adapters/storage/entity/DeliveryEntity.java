@@ -1,23 +1,26 @@
 package com.svysk.ms_delivery.adapters.storage.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "delivery")
 @Getter
 @Setter
 @ToString
@@ -25,18 +28,22 @@ import java.util.Objects;
 public class DeliveryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    String clientName;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "id")
-    @ToString.Exclude
-    List<ProductEntity> products;
+    @Column(name="client_name")
+    private String clientName;
 
-    public DeliveryEntity(String clientName, List<ProductEntity> products) {
+    @OneToMany(mappedBy="delivery", cascade = CascadeType.ALL)
+    private List<ProductQuantityEntity> productQuantities = new ArrayList<>();
+
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
+    public DeliveryEntity(String clientName, List<ProductQuantityEntity> productQuantities, LocalDateTime createdDate) {
         this.clientName = clientName;
-        this.products = products;
+        this.productQuantities = productQuantities;
+        this.createdDate = createdDate;
     }
 
     @Override

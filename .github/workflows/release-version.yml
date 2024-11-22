@@ -6,6 +6,9 @@ on:
       - main  # Only trigger when PR is merged into main
     types: [ closed ]
 
+permissions:
+  contents: write  # Grant write access to repository content (pushing tags, commits)
+
 jobs:
   remove-snapshot:
     if: github.event.pull_request.merged == true
@@ -21,11 +24,16 @@ jobs:
           distribution: 'temurin'
           java-version: '22'
 
-      - name: Bump Version in pom.xml
+      - name: Extract Version Without Snapshot
+        id: version
         run: |
-          current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          current_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | grep -E '^[0-9]+(\.[0-9]+)*(-SNAPSHOT)?$')
           new_version="${current_version/-SNAPSHOT/}"
-          mvn versions:set -DnewVersion=$new_version -DgenerateBackupPoms=false
+          echo "new_version=$new_version" >> $GITHUB_ENV
+
+      - name: Update Version in pom.xml
+        run: |
+          mvn versions:set -DnewVersion=${{ env.new_version }} -DgenerateBackupPoms=false
 
       - name: Commit and Push Version Update
         env:
@@ -35,3 +43,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git commit -am "Bump version to $new_version"
           git push origin HEAD:main
+
+      - name: Create and Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag_name="v$new_version"
+          git tag -a "$tag_name" -m "Release $new_version"
+          git push origin "$tag_name"
