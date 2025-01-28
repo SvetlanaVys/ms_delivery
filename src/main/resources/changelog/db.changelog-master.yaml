@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/changeset/product/create-product-table.yaml
-  - include:
-      file: db/changelog/changeset/product/insert-product-table.yaml
-  - include:
-      file: db/changelog/changeset/product-quantity/create-product-quantity-table.yaml
-  - include:
-      file: db/changelog/changeset/delivery/create-delivery-table.yaml

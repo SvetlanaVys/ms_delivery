@@ -2,9 +2,10 @@ package com.svysk.ms_delivery.application;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.svysk.ms_delivery.domain.Delivery;
 import com.svysk.ms_delivery.domain.Order;
-import com.svysk.ms_delivery.domain.ProductQuantity;
 import com.svysk.ms_delivery.domain.repository.DeliveryRepository;
 import com.svysk.ms_delivery.domain.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.svysk.ms_delivery.config.KafkaTopicConfig.ORDER_REQUEST_TOPIC;
 
@@ -47,7 +48,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public Optional<Delivery> update(Delivery delivery) {
-        return deliveryRepository.update(delivery);
+        return deliveryRepository.save(delivery);
     }
 
     @KafkaListener(
@@ -59,25 +60,21 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void receiveOrder(@Payload String orderMessage) {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Order> orders = objectMapper.readValue(orderMessage, new TypeReference<>() { });
-        List<ProductQuantity> productQuantityList = new ArrayList<>();
-
-        for(Order orderItem : orders) {
-            productQuantityList.add(ProductQuantity.builder()
-                    .cartId(orderItem.getId())
-                    .product(orderItem.getProduct())
-                    .productQuantity(orderItem.getProductQuantity())
-                    .build());
-        }
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        Order order = objectMapper.readValue(orderMessage, new TypeReference<>() { });
 
         Delivery delivery = new Delivery();
-        delivery.setClientName(orders.get(0).getUserId());
-        delivery.setProductQuantities(productQuantityList);
+        delivery.setUserId(order.getUserId());
+        delivery.setOriginalOrderId(order.getId());
+        delivery.setOrderedProducts(order.getOrderedProducts());
+        delivery.setEstimatedDeliveryDate(order.getCreatedDate().plusDays(10));
         delivery.setCreatedDate(LocalDateTime.now());
+
+        String trackingNumber = "ABC" + order.getId() + UUID.randomUUID().toString().substring(0, 8);
+        delivery.setTrackingNumber(trackingNumber);
 
         deliveryRepository.save(delivery);
 
-        System.out.println("Received message: " + orders);
-        System.out.println("Delivery: " + delivery);
     }
 }

@@ -8,16 +8,25 @@ import java.util.Objects;
 
 @Data
 public class Delivery {
+
     private Long id;
 
-    private String clientName;
+    private String userId;
 
-    private List<ProductQuantity> productQuantities;
+    private Long originalOrderId;
+
+    private List<OrderedProduct> orderedProducts;
 
     private LocalDateTime createdDate;
 
+    private LocalDateTime estimatedDeliveryDate;
+
+    private LocalDateTime actualDeliveryDate;
+
+    private String trackingNumber;
+
     boolean containsProductWithName(String name){
-        return productQuantities.stream()
-                .anyMatch(productQ -> Objects.equals(productQ.getProduct().getName(), name));
+        return orderedProducts.stream()
+                .anyMatch(op -> Objects.equals(op.getProductName(), name));
     }
 }

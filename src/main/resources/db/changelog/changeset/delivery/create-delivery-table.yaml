@@ -14,8 +14,24 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: client_name
+                  name: user_id
                   type: varchar
+              - column:
+                  name: original_order_id
+                  type: bigint
               - column:
                   name: created_date
                   type: datetime
+              - column:
+                  name: estimated_delivery_date
+                  type: datetime
+              - column:
+                  name: actual_delivery_date
+                  type: datetime
+              - column:
+                  name: tracking_number
+                  type: varchar
+        - createSequence:
+            sequenceName: "delivery_seq"
+            startValue: 1
+            incrementBy: 1

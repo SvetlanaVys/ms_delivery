@@ -22,7 +22,7 @@ public class DeliveryRepositoryImpl implements DeliveryRepository {
 
     @Override
     public List<Delivery> findAll() {
-        return deliveryEntityDao.findAllWithProductQuantity()
+        return deliveryEntityDao.findAllWithOrderedProducts()
                 .stream()
                 .map(deliveryEntityMapper::toDelivery)
                 .collect(Collectors.toList());
@@ -38,7 +38,7 @@ public class DeliveryRepositoryImpl implements DeliveryRepository {
     public Optional<Delivery> save(Delivery delivery) {
 
         DeliveryEntity deliveryEntity = deliveryEntityMapper.toDeliveryEntity(delivery);
-        deliveryEntity.getProductQuantities().forEach(pq -> pq.setDelivery(deliveryEntity));
+        deliveryEntity.getOrderedProducts().forEach(pq -> pq.setDelivery(deliveryEntity));
 
         return Optional.of(
                 deliveryEntityDao.save(deliveryEntity)
@@ -50,10 +50,4 @@ public class DeliveryRepositoryImpl implements DeliveryRepository {
         deliveryEntityDao.delete(deliveryEntityMapper.toDeliveryEntity(delivery));
     }
 
-    @Override
-    public Optional<Delivery> update(Delivery delivery) {
-        return Optional.of(
-                deliveryEntityDao.save(deliveryEntityMapper.toDeliveryEntity(delivery))
-        ).map(deliveryEntityMapper::toDelivery);
-    }
 }

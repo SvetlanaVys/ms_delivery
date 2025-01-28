@@ -3,12 +3,16 @@ package com.svysk.ms_delivery.domain;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @ToString
 public class Order {
 
-    Long id;
-    String userId;
-    Product product;
-    Integer productQuantity;
+    private Long id;
+    private String userId;
+    private LocalDateTime createdDate;
+
+    private List<OrderedProduct> orderedProducts;
 }

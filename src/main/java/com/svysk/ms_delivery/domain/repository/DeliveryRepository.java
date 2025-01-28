@@ -14,6 +14,4 @@ public interface DeliveryRepository {
     Optional<Delivery> save(Delivery delivery);
 
     void delete(Delivery delivery);
-
-    Optional<Delivery> update(Delivery delivery);
 }

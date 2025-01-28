@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface DeliveryEntityDao extends JpaRepository<DeliveryEntity, Long> {
 
-    @Query(value = "SELECT d FROM DeliveryEntity d LEFT JOIN FETCH d.productQuantities")
-    List<DeliveryEntity> findAllWithProductQuantity();
+    @Query(value = "SELECT d FROM DeliveryEntity d LEFT JOIN FETCH d.orderedProducts")
+    List<DeliveryEntity> findAllWithOrderedProducts();
 }

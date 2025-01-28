@@ -1,13 +1,14 @@
 package com.svysk.ms_delivery.adapters.storage.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,23 +29,30 @@ import java.util.Objects;
 public class DeliveryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "delivery_seq")
+    @SequenceGenerator(name = "delivery_seq", sequenceName = "delivery_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name="client_name")
-    private String clientName;
+    @Column(name="user_id")
+    private String userId;
+
+    @Column(name="original_order_id")
+    private String originalOrderId;
 
     @OneToMany(mappedBy="delivery", cascade = CascadeType.ALL)
-    private List<ProductQuantityEntity> productQuantities = new ArrayList<>();
+    private List<OrderedProductEntity> orderedProducts = new ArrayList<>();
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
-    public DeliveryEntity(String clientName, List<ProductQuantityEntity> productQuantities, LocalDateTime createdDate) {
-        this.clientName = clientName;
-        this.productQuantities = productQuantities;
-        this.createdDate = createdDate;
-    }
+    @Column(name = "estimated_delivery_date")
+    private LocalDateTime estimatedDeliveryDate;
+
+    @Column(name = "actual_delivery_date")
+    private LocalDateTime actualDeliveryDate;
+
+    @Column(name = "tracking_number")
+    private String trackingNumber;
 
     @Override
     public boolean equals(Object o) {

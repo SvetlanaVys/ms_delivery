@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-product-quantity
+      id: create-ordered-product
       author: Svitlana Vyskrebentseva
       changes:
         - createTable:
-            tableName: product_quantity
+            tableName: ordered-product
             columns:
               - column:
                   name: id
@@ -14,17 +14,20 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: cart_id
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
                   name: delivery_id
                   type: bigint
                   constraints:
                     nullable: false
               - column:
-                  name: product_id
+                  name: original_product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_name
+                  type: varchar
+              - column:
+                  name: product_price
                   type: bigint
                   constraints:
                     nullable: false
@@ -36,7 +39,7 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             baseColumnNames: delivery_id
-            baseTableName: product_quantity
+            baseTableName: ordered-product
             baseTableSchemaName: public
             constraintName: fk_pq_delivery
             onDelete: CASCADE
@@ -45,16 +48,7 @@ databaseChangeLog:
             referencedTableName: delivery
             referencedTableSchemaName: public
             validate: true
-        - addForeignKeyConstraint:
-            baseColumnNames: product_id
-            baseTableName: product_quantity
-            baseTableSchemaName: public
-            constraintName: fk_pq_product
-            onDelete: SET NULL
-            onUpdate: RESTRICT
-            referencedColumnNames: id
-            referencedTableName: product
-            referencedTableSchemaName: public
-            validate: true
-
-
+        - createSequence:
+            sequenceName: ordered_product_sequence
+            startValue: 1
+            incrementBy: 1

@@ -30,4 +30,4 @@ spring:
       bootstrap-servers: ${KAFKA_URL}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: svysk
+      group-id: marketplace.svysk
