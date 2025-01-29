@@ -12,6 +12,8 @@ The service subscribes to a Kafka topic where it receives order details sent by 
 
 ## How to Run the Application
 
+> **Note:** Make sure Kafka is running on port 9092 before starting the application, as it requires Kafka for message brokering.
+
 
 ### Running the Application Locally
 
@@ -30,6 +32,9 @@ To run the application in IntelliJ IDEA with the local profile:
 4. **Start the application**
 
 ### Running the Application with Docker
+
+> **Note:** Run [Order Service](https://github.com/SvetlanaVys/ms_order) first.
+
 
 1. **Maven**:
    ```bash
